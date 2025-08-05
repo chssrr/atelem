@@ -1,7 +1,6 @@
 package com.chssr.atelem.controllers;
 
 import com.chssr.atelem.models.User;
-import com.chssr.atelem.repositories.UserRepository;
 import com.chssr.atelem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +11,13 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController (UserService userService) {
+        this.userService = userService;
+    }
 
 
     @GetMapping

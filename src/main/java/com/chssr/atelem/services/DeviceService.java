@@ -6,9 +6,13 @@ import com.chssr.atelem.models.Cabinet;
 import com.chssr.atelem.models.Device;
 import com.chssr.atelem.repositories.CabinetRepository;
 import com.chssr.atelem.repositories.DeviceRepository;
+import com.chssr.atelem.services.specifications.DeviceSpecifications;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +31,13 @@ public class DeviceService {
         this.deviceRepository = deviceRepository;
         this.cabinetRepository = cabinetRepository;
         this.deviceMapper = deviceMapper;
+    }
+
+
+    public Page<DeviceDto> searchDevices(String serialNumber, String manufacturer, String status, Pageable pageable) {
+        Specification<Device> spec = DeviceSpecifications.filterByParams(serialNumber, manufacturer, status);
+        Page<Device> page = deviceRepository.findAll(spec, pageable);
+        return page.map(deviceMapper::toDto);
     }
 
     public List<DeviceDto> findAll() {

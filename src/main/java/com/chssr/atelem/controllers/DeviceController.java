@@ -4,6 +4,9 @@ import com.chssr.atelem.dto.DeviceDto;
 import com.chssr.atelem.models.Device;
 import com.chssr.atelem.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +24,25 @@ public class DeviceController {
         this.deviceService = deviceService;
     }
 
+
+
+    @GetMapping
+    public Page<DeviceDto> findDevices(
+            @RequestParam(required = false) String serialNumber,
+            @RequestParam(required = false) String manufacturer,
+            @RequestParam(required = false) String status,
+            @PageableDefault(size = 10, page = 0) Pageable pageable) {
+
+        return deviceService.searchDevices(serialNumber, manufacturer, status, pageable);
+    }
+/*
+
     @GetMapping
     public ResponseEntity<List<DeviceDto>> findAll() {
         List<DeviceDto> devicesDto = deviceService.findAll();
         return ResponseEntity.ok(devicesDto);
     }
+*/
 
     @GetMapping("/{id}")
     public ResponseEntity<DeviceDto> findById(@PathVariable Long id) {

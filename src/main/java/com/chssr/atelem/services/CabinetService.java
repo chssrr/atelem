@@ -5,9 +5,13 @@ import com.chssr.atelem.mappers.CabinetMapper;
 import com.chssr.atelem.models.Cabinet;
 import com.chssr.atelem.models.Device;
 import com.chssr.atelem.repositories.CabinetRepository;
+import com.chssr.atelem.services.specifications.CabinetSpecifications;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +28,13 @@ public class CabinetService {
     public CabinetService(CabinetRepository cabinetRepository, CabinetMapper cabinetMapper) {
         this.cabinetRepository = cabinetRepository;
         this.cabinetMapper = cabinetMapper;
+    }
+
+
+    public Page<CabinetDto> searchCabinets(String name, String status, String location, Pageable pageable) {
+        Specification<Cabinet> spec = CabinetSpecifications.filterByParams(name, status, location);
+        Page<Cabinet> page = cabinetRepository.findAll(spec, pageable);
+        return page.map(cabinetMapper::toDto);
     }
 
     public List<CabinetDto> findAll() {

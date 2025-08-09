@@ -4,6 +4,9 @@ import com.chssr.atelem.dto.CabinetDto;
 import com.chssr.atelem.models.Cabinet;
 import com.chssr.atelem.services.CabinetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +25,24 @@ public class CabinetController {
         this.cabinetService = cabinetService;
     }
 
+
+    @GetMapping
+    public Page<CabinetDto> getCabinets(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String location,
+            @PageableDefault(size = 10, page = 0) Pageable pageable) {
+
+        return cabinetService.searchCabinets(name, status, location, pageable);
+    }
+
+/*
     @GetMapping
     public ResponseEntity<List<CabinetDto>> findAll() {
         List<CabinetDto> cabinetsDto = cabinetService.findAll();
         return ResponseEntity.ok(cabinetsDto);
     }
+*/
 
     @GetMapping("/{id}")
     public ResponseEntity<CabinetDto> findById(@PathVariable Long id) {

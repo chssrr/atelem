@@ -40,11 +40,7 @@ public class DeviceService {
         return page.map(deviceMapper::toDto);
     }
 
-    public List<DeviceDto> findAll() {
-        return deviceRepository.findAll().stream()
-                .map(deviceMapper::toDto)
-                .collect(Collectors.toList());
-    }
+
 
     public DeviceDto findById(Long id) {
         Device device = deviceRepository.findById(id)

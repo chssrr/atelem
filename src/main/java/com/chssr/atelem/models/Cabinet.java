@@ -4,6 +4,7 @@ package com.chssr.atelem.models;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @Entity
 @Table(name = "cabinets")
 public class Cabinet {
@@ -34,7 +36,7 @@ public class Cabinet {
 
     private String location;
 
-    @OneToMany(mappedBy = "cabinet", cascade = CascadeType.PERSIST, orphanRemoval = false, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cabinet", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     private List<Device> devices = new ArrayList<>();
 
 

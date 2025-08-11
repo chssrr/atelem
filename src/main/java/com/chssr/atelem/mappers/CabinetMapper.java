@@ -3,6 +3,7 @@ package com.chssr.atelem.mappers;
 import com.chssr.atelem.dto.CabinetDto;
 import com.chssr.atelem.dto.DeviceDto;
 import com.chssr.atelem.models.Cabinet;
+import com.chssr.atelem.models.Device;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -51,6 +52,14 @@ public class CabinetMapper {
         cabinet.setPurchaseDate(dto.getPurchaseDate());
         cabinet.setStatus(dto.getStatus());
         cabinet.setLocation(dto.getLocation());
+
+        if (dto.getDevices() != null) {
+            List<Device> devices = dto.getDevices().stream()
+                    .map(deviceMapper::fromDto)
+                    .peek(device -> device.setCabinet(cabinet))
+                    .collect(Collectors.toList());
+            cabinet.setDevices(devices);
+        }
         // Обычно список devices отдельно обновляется, здесь не устанавливаем их
 
         return cabinet;

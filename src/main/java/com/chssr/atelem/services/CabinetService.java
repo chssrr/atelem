@@ -37,11 +37,7 @@ public class CabinetService {
         return page.map(cabinetMapper::toDto);
     }
 
-    public List<CabinetDto> findAll() {
-        return cabinetRepository.findAll().stream()
-                .map(cabinetMapper::toDto)
-                .collect(Collectors.toList());
-    }
+
 
     public CabinetDto findById(Long id) {
         Cabinet cabinet = cabinetRepository.findById(id)

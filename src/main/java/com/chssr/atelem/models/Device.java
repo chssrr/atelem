@@ -3,6 +3,7 @@ package com.chssr.atelem.models;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @Entity
 @Table(name = "devices")
 public class Device {
@@ -25,7 +27,7 @@ public class Device {
 
     private String status;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "cabinet_id")
     private Cabinet cabinet;
 }
